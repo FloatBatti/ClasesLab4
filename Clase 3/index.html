@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="/style.css" rel="stylesheet" type="text/css">
+    <title>Guia JavaScript</title>
+  </head>
+  <body>
+
+    <!-- Todos los elementos del DOM son objetos, teniendo atributos y métodos -->
+
+    <h1 id="cabecera" class="rojo">Ejemplo DOM con JavaScript</h1>
+    <h2 class="subtitulo">Soy un subtitulo modificable</h2>
+
+    <p id="parrafo1" class="rojo">Saludos!</p>
+    <p id="parrafo2">Otro parrafo</p>
+
+    <button onclick="cambiarColor()">Color Párrafo</button>
+    <br/><br/>
+    
+    <form id="formulario">
+
+      Nombre: <input class="inputName" type="text" name="nombre">
+      <br/>
+      Apellido: <input type="number" name="apellido">
+      <br/>
+    </form>
+
+    <!-- Se puede indicar el formulario al que pertenece un input con el atributo form -->
+    <input type="submit" form="formulario">
+
+    <!-- Con los () se manda a llamar una función de JavaScript -->
+    <button onclick="mostrarValores()">Mostrar Valores</button>
+
+    <div id="valoresForm"></div>
+
+    <img id="imagen" src="http://globalmentoring.com.mx/imagenes/javascript.png"> 
+
+    <br/><br/>
+    <button onclick="cambiarFoto()">Cambiar Imagen</button>
+    <br/><br/>
+
+    <input id="inputPrueba">
+    <br/><br/>
+    <input id="inputFile">
+    <br/><br/>
+
+    <div class="contenedor"></div>
+    <br/><br/>
+
+    <div class="contNodos"><p>Nodo 1</p>
+      <p>Nodo 2</p>
+      <p>Nodo 3</p>
+    </div>
+
+    <!-- Los scripts deben ir abajo de los elementos HTML para poder utilizarlos -->
+    <script>
+
+      // Métodos de selección de elementos:
+    
+      let cabecera = document.getElementById("cabecera").innerHTML;
+      console.log(cabecera);
+
+      let parrafo = document.getElementById("parrafo1");
+      console.log(parrafo);
+
+      parrafo.innerHTML = "Hola Mundo!";
+
+      let parrafos = document.getElementsByTagName("p");
+
+      console.log("Hay " + parrafos.length + " parrafos");
+
+      parrafos[1].innerHTML = "Otro parrafo modificado";
+
+      let elementosRojos = document.getElementsByClassName("rojo");
+
+      console.log("Hay " + elementosRojos.length + " elementos rojos");
+
+      let parrafosRojos = document.querySelectorAll("p.rojo");
+
+      console.log("Hay " + parrafosRojos.length + " parrafos rojos");
+
+      //---------------------------------------------------------------------------------------------------------
+
+      // Métodos para definir, obtener, modificar y eliminar valores de atributos:
+
+      // Con document.forms se obtiene el formulario del documento (indicado por su id) en forma de array.
+      let form = document.forms["formulario"];
+
+      // Se puede acceder a los elementos del formulario por su nombre.
+      let inputApellido = form["apellido"]
+      
+      console.log(inputApellido.getAttribute("type"));
+
+      inputApellido.setAttribute("type", "text");
+
+      let subtitulo = document.querySelector(".subtitulo");
+
+      subtitulo.setAttribute("contenteditable", "true");
+
+      let inputPrueba = document.getElementById("inputPrueba");
+
+      inputPrueba.className = "prueba";
+
+      console.log(inputPrueba.className);
+
+      inputPrueba.type = "color";
+
+      inputPrueba.value = "#00AAFF";
+
+      let inputFile = document.getElementById("inputFile");
+
+      inputFile.type = "file";
+
+      inputFile.accept = "image/png"; // Solo se aceptan imagenes png.
+
+      //---------------------------------------------------------------------------------------------------------
+
+      // Métodos para crear elementos/nodos y agregarlos al DOM:
+
+      const contenedor = document.querySelector(".contenedor");
+
+      const item = document.createElement("LI");
+
+      const textItem = document.createTextNode("Item 1");
+
+      item.appendChild(textItem); // Se agrega el texto al elemento LI.
+
+      console.log(item);
+
+      contenedor.appendChild(item); // Se agrega el elemento LI al contenedor.
+
+      contenedor.appendChild(item);
+
+      const fragmento = document.createDocumentFragment();
+      
+
+      for(let i = 2; i <= 5; i++) {
+
+          const item2 = document.createElement("LI");
+
+          const textItem2 = document.createTextNode("Item " + i);
+
+          item2.appendChild(textItem2);
+
+          fragmento.appendChild(item2);
+      }
+
+      contenedor.appendChild(fragmento);
+
+      //---------------------------------------------------------------------------------------------------------
+
+      // Métodos para obtener childs, padres y siblings:
+
+      const contenedorNodos = document.querySelector(".contNodos");
+
+      const primerNodo = contenedorNodos.firstChild;
+
+      console.log(primerNodo);
+
+      const ultimoNodo = contenedorNodos.lastChild;
+
+      console.log(ultimoNodo); // Devuelve #text porque el ultimo nodo es un salto de linea.
+
+      console.log(contenedorNodos.lastElementChild); // Soluciona el problema anterior.
+
+      console.log(contenedorNodos.childNodes);
+
+      console.log(contenedorNodos.children); // Devuelve solo los elementos HTML.
+
+      console.log(ultimoNodo.parentNode);
+
+      console.log(ultimoNodo.parentElement); // Suele ser igual al anterior.
+
+      console.log(primerNodo.previousElementSibling); // Devuelve null porque no hay nodos hermanos anteriores.
+
+      console.log(primerNodo.nextElementSibling);
+
+      //---------------------------------------------------------------------------------------------------------
+
+      function mostrarValores() {
+
+          let formulario = document.forms["formulario"];
+          let texto = "";
+
+          // No utilizo console.log() porque solo se mostraria en la consola del navegador.
+
+          for(let campo of formulario) {
+              texto += campo.value + "<br/>";
+          }
+
+          document.getElementById("valoresForm").innerHTML = texto;
+          
+          // Si no se pone .value, se obtiene el objeto HTML de tipo input.
+          let nombre = formulario["nombre"].value;
+          let apellido = formulario["apellido"].value;
+          
+      }
+
+      function cambiarFoto() {
+
+          // Se obtiene el objeto HTML de tipo imagen.
+          let imagen = document.getElementById("imagen");
+          let linkJS = "http://globalmentoring.com.mx/imagenes/javascript.png";
+          let linkHTML = "http://globalmentoring.com.mx/imagenes/html5.png";
+
+          // Se cambia el valor del atributo src de la imagen.
+          imagen.src == linkHTML ? imagen.src = linkJS: imagen.src = linkHTML;
+
+      }
+
+      function cambiarColor() {
+
+          let parrafo2 = document.getElementById("parrafo2");
+
+          // Se cambia el style del elemento HTML.
+          parrafo2.style.color == "red" ? parrafo2.style.color = "blue" : parrafo2.style.color= "red";
+
+      }
+
+      document.write("<br/> Mensaje directo desde JavaScript");
+
+
+    </script>
+
+    <br/>
+    <a href="DOM-2.html" target="_blank">Otra página</a>
+    <br><br>
+    <a href="console.html" target="_blank">Probar resultados por consola</a>
+  </body>
+</html>
