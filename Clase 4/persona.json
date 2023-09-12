@@ -1,0 +1,13 @@
+{
+    "nombre": "Bruno díaz",
+    "edad": 35,
+    "esEstudiante": false,
+    "direccion":{
+        "calle": "Calle falsa 123",
+        "ciudad": "Mar del plata"
+    },
+    "telefonos":[
+        "223-686-4798",
+        "223-571-8963"
+    ]
+}

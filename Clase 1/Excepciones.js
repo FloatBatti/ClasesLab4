@@ -18,7 +18,7 @@ console.log("Continua la ejecución del programa");
 try {
     
     // Con la palabra reservada throw se puede lanzar una excepción.
-    throw "Error personalizado";
+    throw Error("Error personalizado");
 
 } catch (error) {
     
