@@ -30,6 +30,28 @@ fetch('https://api.example.com/create', {
     console.log(error);
   });
 
+/*! IMPORTANTE:
+
+Los errores en la solicitud HTTP antes de que se resuelva la promesa, como errores de red o URLs incorrectas, no son manejados directamente por la cadena de promesas en JavaScript. Estos errores son manejados por la lógica interna de la función fetch. Por ejemplo:
+
+ En el caso de un código de estado 404, la solicitud HTTP se considera exitosa desde la perspectiva de fetch. Si deseas que el bloque catch se ejecute en este caso, debes agregar una verificación adicional para el código de estado HTTP dentro del primer .then y lanzar un error si el código de estado indica un problema. Aquí tienes una corrección:
+
+ fetch("https://rickandmortyapi.com/api/character/999999", { method: 'GET' })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error("Error en la solicitud fetch. Código de estado: " + response.status);
+    }
+    return response.json();
+  })
+  .then(data => {
+    console.log(data);
+  })
+  .catch(error => {
+    console.log("Error en la solicitud fetch:", error);
+  });
+
+
+*/
 
 fetch("https://rickandmortyapi.com/api/character/300", { method: 'GET' })
 .then(response => response.json()) // Convierte la respuesta en formato JSON
@@ -43,21 +65,37 @@ fetch("https://rickandmortyapi.com/api/character/300", { method: 'GET' })
 });
 
 
-async function obtenerImagenPorID(id) {
+async function obtenerObjeto(id) {
+  
+  const url = `https://rickandmortyapi.com/api/character/${id}`;
 
   try {
 
-    const url = `https://rickandmortyapi.com/api/character/${id}`;
 
     const responseAPI = await fetch(url, { method: 'GET' });
+
+    
+        /* Sin await
+        
+        fecth me retorna la promesa
+        Si la promesa se resuelve primero hay que parsearla.
+        Si no viene ok (codigo 200) lanzo un error que lo atrapa el catch de la promesa
+        Si hay un error de servidor (500) o de bad request (404) no va a ser atrapado por el catch de la promesa, ya que se toma como caso de exito, indistinto si devuelve un dato o no.
+
+        fetch(url, { method: 'GET' }).then(data =>{
+
+            if(!data.ok) throw new Error(`No se pudo obtener la imagen para el ID ${id}`);
+        })
+        .then(parseData => responseAPI = parseData)
+        .catch(error => console.log(error));
+        
+        */
 
     if (!responseAPI.ok) {
       throw new Error(`No se pudo obtener la imagen para el ID ${id}`);
     }
 
-    const data = await responseAPI.json(); // Nos ahorramos un then.
-
-    return data;
+    return await responseAPI.json(); // Nos ahorramos un then.
 
   } catch (error) {
 
@@ -65,12 +103,17 @@ async function obtenerImagenPorID(id) {
   }
 }
 
+console.log(await obtenerObjeto(15)); // Gracias a await ya se me esta retornando el dato. Esto no se pdodría hacer porque await solo se coloca en funciones async.
+
+/* Si usara el then, tendría que tratar el dato en esa funcion: */
+
+obtenerObjeto(15).then(data => console.log(data));
 
 document.getElementById("juego").addEventListener("click", (evento) =>{
 
   const random = Math.round(Math.random() * 826) + 1
 
-  obtenerImagenPorID(random)
+  obtenerObjeto(random)
   .then((data) =>{
 
     

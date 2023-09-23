@@ -83,6 +83,7 @@ miFuncionConPromesa().then(valor => console.log(valor));
 // await solo se puede usar dentro de una función declarada con async.
 // Si hay más de una promesa, se ejecutan en paralelo, es decir, no se espera a que se resuelva una para ejecutar la otra.
 // Gracias al await, se puede esperar a que se resuelva una promesa para ejecutar la otra.
+// await ESPERA LA PROMESA RESUELTA.
 
 async function funcionConPromesaYAwait(){
     
@@ -94,9 +95,11 @@ async function funcionConPromesaYAwait(){
         // await manda a llamar a la promesa y espera a que se resuelva (por eso no se usa then).
         // El valor retornado es el que está en los parámetros del callback.
         console.log(await miPromesa);
+
+        //miPromesa.then(mensaje => console.log(mensaje)); // Si no se usa await
 }
 
-funcionConPromesaYAwait();
+funcionConPromesaYAwait(); //Aqui no uso un await o un then porque la funcion no me retorna ningún dato.
 
 async function funcionConPromesaAwaitTimeout(){
 
@@ -111,6 +114,30 @@ async function funcionConPromesaAwaitTimeout(){
 }
 
 funcionConPromesaAwaitTimeout();
+
+async function returnDaTaAsync(){
+
+    let miPromesa = new Promise(resolve => {
+
+        setTimeout(() => resolve({nombre: "Agustin", ciudad:"Mar del Plata"}), 3000);
+    });
+
+    /*
+        Si uso el then, voy a indicar una función que trabje con el objeto en el parámetro de la funcion resolve de arriba.
+
+        Si uso un await, ya me retorna el dato y despúes decido que hacer con el. Lo mismo que en el then, pero me permite manejarlo sin tener que estar dentro de una función then.
+    */
+
+    return await miPromesa; // Con await espero que se resuelva la promesa. Si se resuelve me retorna lo que está dentro del resolve. Una vez se retorna, retorno el dato de la función returnDaTaAsync. Es como si hubiese un doble return. Primero se retorna el dato de la promesa y despúes el return de la función.
+}
+
+/* A diferencia del método anterior este SI retorna algo. Como quiero el resultado y no estoy dentro de una función async, tengo que usar then. Si estuviera dentro de una función asincrónica podría hacer lo siguiente:
+
+console.log(await funcionConPromesaAwaitTimeout());
+*/
+
+funcionConPromesaAwaitTimeout().then(data => console.log(data)); // Cuando uso el then estoy diciendo "hace esto cuando la promesa se resuelve". La promesa resuelta indica el retorno de returnDaTaAsync(). Recordar que async siempre me retorna una promesa. En este caso se tuvo que usar then porque estamos fuera de una función asincronica.
+
 
 //! Uso de async concurrente
 
