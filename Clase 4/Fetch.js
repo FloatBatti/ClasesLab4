@@ -71,39 +71,38 @@ async function obtenerObjeto(id) {
 
   try {
 
-
     const responseAPI = await fetch(url, { method: 'GET' });
-
     
-        /* Sin await
-        
-        fecth me retorna la promesa
-        Si la promesa se resuelve primero hay que parsearla.
-        Si no viene ok (codigo 200) lanzo un error que lo atrapa el catch de la promesa
-        Si hay un error de servidor (500) o de bad request (404) no va a ser atrapado por el catch de la promesa, ya que se toma como caso de exito, indistinto si devuelve un dato o no.
-
-        fetch(url, { method: 'GET' }).then(data =>{
-
-            if(!data.ok) throw new Error(`No se pudo obtener la imagen para el ID ${id}`);
-        })
-        .then(parseData => responseAPI = parseData)
-        .catch(error => console.log(error));
-        
-        */
-
     if (!responseAPI.ok) {
       throw new Error(`No se pudo obtener la imagen para el ID ${id}`);
     }
 
-    return await responseAPI.json(); // Nos ahorramos un then.
+    /* Sin await:
+    
+    fecth me retorna la promesa
+    Si la promesa se resuelve primero hay que parsearla.
+    Si no viene ok (codigo 200) lanzo un error que lo atrapa el catch de la promesa
+    Si hay un error de servidor (500) o de bad request (404) no va a ser atrapado por el catch de la promesa, ya que se toma como caso de exito, indistinto si devuelve un dato o no.
 
+    fetch(url, { method: 'GET' }).then(data =>{
+
+        if(!data.ok) throw new Error(`No se pudo obtener la imagen para el ID ${id}`);
+
+        data.json();
+    })
+    .then(parseData => responseAPI = parseData)
+    .catch(error => console.log(error));
+    
+    */
+    return await responseAPI.json(); // Nos ahorramos un then.
+    
   } catch (error) {
 
     throw error;
   }
 }
 
-console.log(await obtenerObjeto(15)); // Gracias a await ya se me esta retornando el dato. Esto no se pdodría hacer porque await solo se coloca en funciones async.
+console.log(await obtenerObjeto(15)); // Gracias a await ya se me esta retornando el dato. Esto no se podría hacer porque await solo se coloca en funciones async.
 
 /* Si usara el then, tendría que tratar el dato en esa funcion: */
 

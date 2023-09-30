@@ -123,7 +123,7 @@ async function returnDaTaAsync(){
     });
 
     /*
-        Si uso el then, voy a indicar una función que trabje con el objeto en el parámetro de la funcion resolve de arriba.
+        Si uso el then, voy a indicar una función que trabaje con el objeto en el parámetro de la funcion resolve de arriba.
 
         Si uso un await, ya me retorna el dato y despúes decido que hacer con el. Lo mismo que en el then, pero me permite manejarlo sin tener que estar dentro de una función then.
     */
@@ -136,7 +136,7 @@ async function returnDaTaAsync(){
 console.log(await funcionConPromesaAwaitTimeout());
 */
 
-funcionConPromesaAwaitTimeout().then(data => console.log(data)); // Cuando uso el then estoy diciendo "hace esto cuando la promesa se resuelve". La promesa resuelta indica el retorno de returnDaTaAsync(). Recordar que async siempre me retorna una promesa. En este caso se tuvo que usar then porque estamos fuera de una función asincronica.
+returnDaTaAsync().then(data => console.log(data)); // Cuando uso el then estoy diciendo "hace esto cuando la promesa se resuelve". La promesa resuelta indica el retorno de returnDaTaAsync(). Recordar que async siempre me retorna una promesa. En este caso se tuvo que usar then porque estamos fuera de una función asincronica.
 
 
 //! Uso de async concurrente

@@ -1,9 +1,10 @@
 
 let saludo:string = "Hola Mundo";
-
 // saludo = 10; No se puede asignar un valor de que tenga un tipo diferente de dato.
 
 let numero:number = 10;
+
+let nombre:string = "Ezequiel";
 
 // con any se puede asignar cualquier tipo de dato
 let culaquiera:any = "Hola";

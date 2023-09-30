@@ -95,8 +95,7 @@ function sumar(a, b, callback) {
     callback(resultado);
 }
 
-
-sumar(2, 3, mostrarResultado);
+sumar(numero, 3, mostrarResultado);
 
 sumar(4,4, mostrarResultado);
 
